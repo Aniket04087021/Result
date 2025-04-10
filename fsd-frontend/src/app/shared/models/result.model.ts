@@ -1,8 +1,9 @@
 export interface Result {
-    p_id: string;
+    id?: number;
+    pId: string;
     name: string;
     position: string;
-    winning_amount: number;
-    f_id: string;
-    event_id: string;
+    winningAmount: number;
+    fId: string;
+    eventId: string;
 } 

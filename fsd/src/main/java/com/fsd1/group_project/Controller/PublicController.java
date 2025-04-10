@@ -113,25 +113,41 @@ public class PublicController {
     }
        @GetMapping("/dashboard")
     public ResponseEntity<?> dashboard() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUserEmail = authentication.getName();
-    
-        Optional<User> optionalUser = userService.findByEmail(currentUserEmail);
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not found"));
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUserEmail = authentication.getName();
+            System.out.println("Dashboard access for user: " + currentUserEmail);
+        
+            Optional<User> optionalUser = userService.findByEmail(currentUserEmail);
+            if (optionalUser.isEmpty()) {
+                System.out.println("User not found for dashboard access: " + currentUserEmail);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "User not found"));
+            }
+        
+            User user = optionalUser.get();
+            System.out.println("Dashboard data retrieved for user: " + currentUserEmail);
+        
+            return ResponseEntity.ok(Map.of(
+                    "message", "Welcome to your dashboard",
+                    "username", user.getName(),
+                    "email", user.getEmail(),
+                    "roles", user.getRoles(),
+                    "clg_name", user.getClg_name()
+            ));
+        } catch (Exception e) {
+            System.err.println("Error accessing dashboard: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Error accessing dashboard: " + e.getMessage()));
         }
-    
-        User user = optionalUser.get();
-    
-        return ResponseEntity.ok(Map.of(
-                "message", "Welcome to your dashboard",
-                "username", user.getName(),
-                "email", user.getEmail(),
-                "roles", user.getRoles(),
-                "clg_name", user.getClg_name()
-        ));
     }
 
-
+    @GetMapping("/test")
+    public ResponseEntity<?> test() {
+        return ResponseEntity.ok(Map.of(
+                "message", "Backend is working correctly",
+                "timestamp", System.currentTimeMillis()
+        ));
+    }
 
 }

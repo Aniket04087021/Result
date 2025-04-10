@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .cors(cors -> {}) // enable CORS (use empty lambda instead of .cors().and())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/results/**").permitAll() // Allow access to results API
                         .requestMatchers("/dashboard/**").authenticated()
                 )
                 .exceptionHandling(exception -> exception
@@ -66,10 +67,10 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200")); // React app origin
+        config.setAllowedOrigins(Arrays.asList("*")); // Allow all origins during development
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowCredentials(true);
+        config.setAllowCredentials(false); // Must be false when allowedOrigins is "*"
         config.setMaxAge(3600L); // Cache for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

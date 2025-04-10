@@ -40,8 +40,8 @@ import { FormsModule } from '@angular/forms';
                 <tr *ngFor="let result of filteredResults" class="hover:bg-gray-50">
                   <td class="py-3 px-4 border-b">{{result.name}}</td>
                   <td class="py-3 px-4 border-b">{{result.position}}</td>
-                  <td class="py-3 px-4 border-b">₹{{result.winning_amount}}</td>
-                  <td class="py-3 px-4 border-b">{{result.event_id}}</td>
+                  <td class="py-3 px-4 border-b">₹{{result.winningAmount}}</td>
+                  <td class="py-3 px-4 border-b">{{result.eventId}}</td>
                 </tr>
               </tbody>
             </table>
@@ -120,9 +120,13 @@ export class ResultComponent implements OnInit {
       next: (data) => {
         this.results = data;
         this.filteredResults = data;
+        console.log('Results loaded successfully:', data);
       },
       error: (error) => {
         console.error('Error loading results:', error);
+        // You could add a user-friendly error message here
+        this.results = [];
+        this.filteredResults = [];
       }
     });
   }

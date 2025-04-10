@@ -51,7 +51,7 @@ public class JwtUtils {
                 .signWith(getSigninKey())
                 .compact();
     }
-    public Boolean vaildToken (String token, UserDetails userDetails){
+    public Boolean validToken(String token, UserDetails userDetails){
         try{
             String email =extractEmail(token);
             return email.equals(userDetails.getUsername())&&!isTokenExpired(token);

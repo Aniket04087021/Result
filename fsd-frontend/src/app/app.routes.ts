@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ResultComponent } from './shared/components/result/result.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,13 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./dashboard/components/dashboard/dashboard.component').then(
         (m) => m.DashboardComponent
+      ),
+  },
+  {
+    path: 'test',
+    loadComponent: () =>
+      import('./shared/components/test/test.component').then(
+        (m) => m.TestComponent
       ),
   },
   {
